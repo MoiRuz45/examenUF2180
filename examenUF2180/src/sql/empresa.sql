@@ -37,4 +37,3 @@ INSERT INTO `departamentos` VALUES
         (121,10,'P',2,120,'PERSONAL'),
         (122,10,'P',6,120,'PROCESO DE DATOS'),
         (130,10,'P',2,100,'FINANZAS');
-

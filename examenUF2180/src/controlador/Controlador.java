@@ -8,9 +8,13 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import dao.CentroDAO;
+import dao.DepartamentoDao;
 import modelo.Centro;
+import modelo.Departamento;
 import vista.DialogoAnadirCentro;
+import vista.DialogoAnadirDepartamento;
 import vista.VentanaMostrarCentros;
+import vista.VentanaMostrarDepartamentos;
 import vista.VentanaPpal;
 
 /**
@@ -23,10 +27,13 @@ public class Controlador {
 	private VentanaPpal ventanaPpal;
 	private VentanaMostrarCentros ventanaMostrarCentros;
 	private DialogoAnadirCentro dialogoAnadirCentro;
+	private DialogoAnadirDepartamento dialogoAnadirDepartamento;
+	private VentanaMostrarDepartamentos ventanaMostrarDepartamento;
 	
 	// Objetos DAO o CRUD de la base de datos
 	private CentroDAO centroDAO;
-
+	private DepartamentoDao departamentoDao;
+	private Controlador controlador;
 	
 	
 	public Controlador() {
@@ -34,6 +41,8 @@ public class Controlador {
 		ventanaPpal = new VentanaPpal();
 		ventanaMostrarCentros = new VentanaMostrarCentros();
 		dialogoAnadirCentro = new DialogoAnadirCentro();
+		ventanaMostrarDepartamento = new VentanaMostrarDepartamentos();
+		dialogoAnadirDepartamento = new DialogoAnadirDepartamento();
 		
 		// Dando acceso al controlador desde las vistas
 		ventanaPpal.setControlador(this);
@@ -43,6 +52,7 @@ public class Controlador {
 		
 		// Creamos los objetos DAO
 		centroDAO = new CentroDAO();
+		departamentoDao = new DepartamentoDao();
 	}
 	
 	
@@ -58,9 +68,17 @@ public class Controlador {
 		ventanaMostrarCentros.setListaCentros(lista);
 		ventanaMostrarCentros.setVisible(true);
 	}
-	
+	public void mostrarListarDepartamento() {
+		ArrayList<Departamento> lista = departamentoDao.obtenerDepartamento();
+		VentanaMostrarDepartamentos.setListaDepartamentos(lista);
+		ventanaMostrarCentros.setVisible(true);
+	}
 	public void mostrarInsertarCentros() {
 		dialogoAnadirCentro.setVisible(true);
+	}
+	public void mostrarInsertarDepartamento() {
+		DialogoAnadirDepartamento dialogoAnadirDepartamento = new DialogoAnadirDepartamento();
+		dialogoAnadirDepartamento.setVisible(true);
 	}
 
 
@@ -78,6 +96,14 @@ public class Controlador {
 			dialogoAnadirCentro.setVisible(false);
 		}
 	}
-	
-	
+
+	public void insertarDepartamento(Departamento departamento) {
+		int resultado = departamentoDao.insertarDepartamento(departamento);
+		if (resultado ==0) {
+			JOptionPane.showMessageDialog(dialogoAnadirDepartamento, "Error. no se ha podido insertar el departamento.");
+		} else {
+			JOptionPane.showMessageDialog(dialogoAnadirDepartamento, "Insercion del departamento correcta");
+			dialogoAnadirDepartamento.setVisible(false);
+		}
+	}
 }
